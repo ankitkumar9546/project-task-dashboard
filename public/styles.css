@@ -485,11 +485,87 @@ select:focus {
   opacity: 1;
 }
 
+/* ── Kanban board ─────────────────────────────── */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+  overflow-x: auto;
+}
+
+.kanban-col {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.kanban-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border: 1px solid var(--line);
+  background: var(--surface-muted);
+  color: var(--muted);
+}
+
+.kanban-col-header.status-todo {
+  border-color: var(--line);
+  background: var(--surface-muted);
+  color: #334155;
+}
+
+.kanban-col-header.status-in-progress {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--blue);
+}
+
+.kanban-col-header.status-done {
+  border-color: rgba(21, 128, 61, 0.22);
+  background: rgba(21, 128, 61, 0.08);
+  color: var(--green);
+}
+
+.kanban-col-header.status-blocked {
+  border-color: rgba(220, 38, 38, 0.22);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--red);
+}
+
+.kanban-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.09);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.kanban-tasks {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.empty-state.small {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+}
+
 @media (max-width: 1040px) {
   .layout,
   .project-workspace,
   .dashboard-grid,
-  .detail-grid {
+  .detail-grid,
+  .kanban-board {
     grid-template-columns: 1fr;
   }
 

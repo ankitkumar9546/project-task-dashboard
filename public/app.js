@@ -119,6 +119,18 @@ function setView(view) {
   $$("[data-panel]").forEach((panel) => panel.classList.toggle("is-hidden", panel.dataset.panel !== view));
 }
 
+function isUserAdmin() {
+  // User is "admin" if they are ADMIN in at least one project, or have no projects yet
+  return state.projects.length === 0 || state.projects.some((p) => p.role === "ADMIN");
+}
+
+function renderSidebar() {
+  const newProjectPanel = $("[data-new-project-panel]");
+  if (newProjectPanel) {
+    newProjectPanel.classList.toggle("is-hidden", !isUserAdmin());
+  }
+}
+
 async function refreshAll() {
   const [dashboardData, projectsData] = await Promise.all([api("/api/dashboard"), api("/api/projects")]);
   state.dashboard = dashboardData;
@@ -135,6 +147,7 @@ async function refreshAll() {
     state.currentProject = null;
   }
 
+  renderSidebar();
   renderDashboard();
   renderProjectList();
   renderProjectDetail();
@@ -256,6 +269,14 @@ function renderProjectDetail() {
 
   const isAdmin = project.role === "ADMIN";
 
+  // Group tasks by status for kanban-style display
+  const tasksByStatus = {
+    TODO: project.tasks.filter((t) => t.status === "TODO"),
+    IN_PROGRESS: project.tasks.filter((t) => t.status === "IN_PROGRESS"),
+    DONE: project.tasks.filter((t) => t.status === "DONE"),
+    BLOCKED: project.tasks.filter((t) => t.status === "BLOCKED")
+  };
+
   container.innerHTML = `
     <article class="project-detail">
       <section class="panel">
@@ -300,48 +321,44 @@ function renderProjectDetail() {
           </div>
         </section>
 
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Create task</h2>
-            <span class="muted">${isAdmin ? "Admin controls" : "Admin only"}</span>
-          </div>
-          ${
-            isAdmin
-              ? `
-                <form class="stack" data-task-form>
-                  <label>
-                    Title
-                    <input name="title" type="text" maxlength="160" required>
-                  </label>
-                  <label>
-                    Description
-                    <textarea name="description" rows="3" maxlength="1000"></textarea>
-                  </label>
-                  <label>
-                    Assignee
-                    <select name="assigneeId">
-                      <option value="">Unassigned</option>
-                      ${project.members
-                        .map((member) => `<option value="${escapeHtml(member.userId)}">${escapeHtml(member.user.name)}</option>`)
-                        .join("")}
-                    </select>
-                  </label>
-                  <label>
-                    Due date
-                    <input name="dueDate" type="date">
-                  </label>
-                  <label>
-                    Status
-                    <select name="status">
-                      ${statusOptions("TODO")}
-                    </select>
-                  </label>
-                  <button class="primary" type="submit">Create task</button>
-                </form>
-              `
-              : `<div class="empty-state">Ask a project admin to create or assign tasks.</div>`
-          }
-        </section>
+        ${isAdmin ? `
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Create task</h2>
+              <span class="muted">Admin controls</span>
+            </div>
+            <form class="stack" data-task-form>
+              <label>
+                Title
+                <input name="title" type="text" maxlength="160" required>
+              </label>
+              <label>
+                Description
+                <textarea name="description" rows="3" maxlength="1000"></textarea>
+              </label>
+              <label>
+                Assignee
+                <select name="assigneeId">
+                  <option value="">Unassigned</option>
+                  ${project.members
+                    .map((member) => `<option value="${escapeHtml(member.userId)}">${escapeHtml(member.user.name)}</option>`)
+                    .join("")}
+                </select>
+              </label>
+              <label>
+                Due date
+                <input name="dueDate" type="date">
+              </label>
+              <label>
+                Status
+                <select name="status">
+                  ${statusOptions("TODO")}
+                </select>
+              </label>
+              <button class="primary" type="submit">Create task</button>
+            </form>
+          </section>
+        ` : ""}
       </div>
 
       <section class="panel">
@@ -349,8 +366,21 @@ function renderProjectDetail() {
           <h2>Tasks</h2>
           <span class="muted">${project.tasks.length} total</span>
         </div>
-        <div class="task-list">
-          ${taskList(project.tasks, { projectRole: project.role })}
+        <div class="kanban-board">
+          ${Object.entries(statusLabels).map(([status, label]) => `
+            <div class="kanban-col">
+              <div class="kanban-col-header status-${statusClasses[status]}">
+                <span>${label}</span>
+                <span class="kanban-count">${tasksByStatus[status].length}</span>
+              </div>
+              <div class="kanban-tasks">
+                ${tasksByStatus[status].length
+                  ? tasksByStatus[status].map((task) => taskCard(task, { projectRole: project.role })).join("")
+                  : `<div class="empty-state small">No tasks</div>`
+                }
+              </div>
+            </div>
+          `).join("")}
         </div>
       </section>
     </article>
@@ -637,6 +667,7 @@ async function init() {
     state.user = data.user;
     renderAuth();
     await refreshAll();
+    renderSidebar();
   } catch (_error) {
     logout(false);
   }
