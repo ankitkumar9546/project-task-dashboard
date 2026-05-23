@@ -1,0 +1,535 @@
+:root {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-muted: #edf2f7;
+  --line: #d7dee8;
+  --text: #142033;
+  --muted: #607086;
+  --primary: #0f766e;
+  --primary-dark: #115e59;
+  --blue: #2563eb;
+  --red: #dc2626;
+  --amber: #b45309;
+  --green: #15803d;
+  --shadow: 0 12px 36px rgba(20, 32, 51, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.65rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.1rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  padding: 0.72rem 0.78rem;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.auth-panel {
+  width: min(460px, 100%);
+  display: grid;
+  gap: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem;
+  border-radius: 8px;
+  background: var(--surface-muted);
+  padding: 0.35rem;
+}
+
+.auth-tabs button,
+.nav-item {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.72rem 0.9rem;
+  font-weight: 800;
+}
+
+.auth-tabs button.is-active,
+.nav-item.is-active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 8px rgba(20, 32, 51, 0.08);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(245, 247, 251, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 1rem 1.25rem;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-chip,
+.role-badge,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 0.3rem 0.6rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.role-badge.admin {
+  border-color: rgba(15, 118, 110, 0.24);
+  background: rgba(15, 118, 110, 0.1);
+  color: var(--primary-dark);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  gap: 1.1rem;
+  padding: 1.1rem;
+}
+
+.sidebar,
+.content,
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.sidebar {
+  align-content: start;
+}
+
+.nav-stack,
+.panel,
+.metric,
+.task-card,
+.empty-state {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.nav-stack {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.4rem;
+}
+
+.nav-item {
+  text-align: left;
+}
+
+.panel,
+.metric,
+.task-card,
+.empty-state {
+  padding: 1rem;
+}
+
+.panel.tight {
+  padding: 0.9rem;
+}
+
+.section-heading,
+.panel-header,
+.task-meta,
+.member-row,
+.project-row,
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.section-heading {
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  color: var(--primary-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.primary,
+.ghost,
+.danger {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.72rem 0.95rem;
+  font-weight: 850;
+}
+
+.primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--primary-dark);
+}
+
+.ghost {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.danger {
+  border-color: rgba(220, 38, 38, 0.24);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--red);
+}
+
+.full {
+  width: 100%;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.metric {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.metric strong {
+  font-size: 1.75rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.status-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.status-line {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.bar {
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+}
+
+.project-workspace {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.project-list,
+.task-list,
+.member-list {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.project-row {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.project-row.is-active {
+  border-color: rgba(15, 118, 110, 0.42);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.project-row small,
+.muted,
+.task-card p,
+.empty-state {
+  color: var(--muted);
+}
+
+.project-detail {
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.member-row {
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
+}
+
+.member-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.member-main,
+.task-main {
+  min-width: 0;
+}
+
+.member-main strong,
+.task-main strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.member-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.member-actions select {
+  width: 116px;
+}
+
+.task-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.task-meta {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.task-actions {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) auto;
+  gap: 0.5rem;
+}
+
+.status-badge.todo {
+  color: #334155;
+}
+
+.status-badge.in-progress {
+  border-color: rgba(37, 99, 235, 0.22);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--blue);
+}
+
+.status-badge.done {
+  border-color: rgba(21, 128, 61, 0.22);
+  background: rgba(21, 128, 61, 0.08);
+  color: var(--green);
+}
+
+.status-badge.blocked,
+.status-badge.overdue {
+  border-color: rgba(220, 38, 38, 0.22);
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--red);
+}
+
+.toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: min(420px, calc(100vw - 2rem));
+  transform: translateY(1rem);
+  border-radius: 8px;
+  background: #142033;
+  color: #fff;
+  padding: 0.85rem 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: 160ms ease;
+}
+
+.toast.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 1040px) {
+  .layout,
+  .project-workspace,
+  .dashboard-grid,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-list-panel {
+    order: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  .section-heading,
+  .panel-header,
+  .project-row,
+  .card-title-row,
+  .member-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar-actions,
+  .member-actions,
+  .task-actions {
+    width: 100%;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .layout {
+    padding: 0.8rem;
+  }
+
+  .task-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
