@@ -122,7 +122,7 @@ Authorization: Bearer <token>
 
 ## Submission Checklist
 
-- Live URL: add Railway URL here after deployment
-- GitHub repo: add repository URL here
-- README: included
-- Demo video: record a 2-5 minute walkthrough showing signup/login, project creation, adding a member, assigning a task, member status update, and the dashboard
+- Live URL: [Pending Railway Deployment]
+- GitHub repo: https://github.com/ankitkumar9546/project-task-dashboard
+- README: included ✅
+- Demo video: [Pending Demo Video Recording]
