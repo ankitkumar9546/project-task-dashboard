@@ -122,7 +122,7 @@ Authorization: Bearer <token>
 
 ## Submission Checklist
 
-- Live URL: [Pending Railway Deployment]
+- Live URL: https://project-task-dashboard-production.up.railway.app
 - GitHub repo: https://github.com/ankitkumar9546/project-task-dashboard
 - README: included ✅
 - Demo video: [Pending Demo Video Recording]
