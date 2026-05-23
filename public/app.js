@@ -478,18 +478,22 @@ async function handleCreateProject(event) {
 async function handleAddMember(event) {
   event.preventDefault();
   const payload = formData(event.currentTarget);
+  console.log("handleAddMember triggered with email:", payload.email, "role:", payload.role);
+  console.log("Current Project ID in state:", state.currentProjectId);
 
   try {
     const data = await api(`/api/projects/${state.currentProjectId}/members`, {
       method: "POST",
       body: JSON.stringify(payload)
     });
+    console.log("Add member API call succeeded, response data:", data);
     state.currentProject = data.project;
     event.currentTarget.reset();
     renderProjectDetail();
     await refreshAll();
     showToast("Member updated.");
   } catch (error) {
+    console.error("Add member API call failed with error:", error);
     showToast(error.message);
   }
 }

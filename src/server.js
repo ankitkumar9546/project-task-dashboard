@@ -500,15 +500,21 @@ app.post(
   requireProjectAdmin,
   asyncHandler(async (req, res) => {
     const data = validate(memberSchema, req.body);
+    console.log("[MEMBER_ADD] Attempting to add member. Email input:", data.email, "Role input:", data.role);
+    console.log("[MEMBER_ADD] Project ID:", req.params.projectId, "Requesting User ID:", req.user.id);
+
     const user = await prisma.user.findUnique({ where: { email: data.email }, select: userSelect });
+    console.log("[MEMBER_ADD] Result of user search in database:", user);
 
     if (!user) {
+      console.warn("[MEMBER_ADD] Error: User with email does not exist:", data.email);
       throw httpError(404, "User must sign up before they can be added to a project.");
     }
 
     const role = user.id === req.project.ownerId ? "ADMIN" : data.role;
 
-    await prisma.projectMember.upsert({
+    console.log("[MEMBER_ADD] Upserting project member relationship...");
+    const result = await prisma.projectMember.upsert({
       where: { projectId_userId: { projectId: req.params.projectId, userId: user.id } },
       update: { role },
       create: {
@@ -517,8 +523,10 @@ app.post(
         role
       }
     });
+    console.log("[MEMBER_ADD] Upsert result:", result);
 
     const project = await loadProjectDetail(req.params.projectId, req.user.id, req.projectRole);
+    console.log("[MEMBER_ADD] Loaded updated project detail successfully");
     res.status(201).json({ project });
   })
 );
